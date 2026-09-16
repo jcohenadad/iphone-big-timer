@@ -4,8 +4,12 @@ import UserNotifications
 
 /// Looping in-app alarm sound + haptics. Uses the .playback category so it rings even with the silent switch on.
 final class AlarmPlayer {
+    /// How long the in-app beep + haptics ring for before stopping on their own.
+    private static let ringDuration: TimeInterval = 3
+
     private var player: AVAudioPlayer?
     private var hapticTimer: Timer?
+    private var stopTimer: Timer?
     private(set) var isRinging = false
 
     func start() {
@@ -29,6 +33,9 @@ final class AlarmPlayer {
         hapticTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             haptic.notificationOccurred(.warning)
         }
+        stopTimer = Timer.scheduledTimer(withTimeInterval: Self.ringDuration, repeats: false) { [weak self] _ in
+            self?.stop()
+        }
     }
 
     func stop() {
@@ -37,6 +44,8 @@ final class AlarmPlayer {
         player?.stop()
         hapticTimer?.invalidate()
         hapticTimer = nil
+        stopTimer?.invalidate()
+        stopTimer = nil
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
