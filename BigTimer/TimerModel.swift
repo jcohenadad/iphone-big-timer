@@ -14,6 +14,7 @@ final class TimerModel {
     @ObservationIgnored private var ticker: Timer?
     @ObservationIgnored private let alarm = AlarmPlayer()
     @ObservationIgnored private var isActive = true
+    @ObservationIgnored private var isBackgrounded = false
     @ObservationIgnored private let defaults = UserDefaults.standard
 
     init() { restore() }
@@ -128,6 +129,10 @@ final class TimerModel {
             alarm.stop()   // pending notifications keep ringing in the background
             stopTicker()
         }
+        // .inactive happens for transient system overlays (Control Center, a share
+        // sheet, the permission prompt…) while still on screen, so only treat a real
+        // .background transition as "not foreground" for keep-awake purposes.
+        isBackgrounded = scenePhase == .background
         updateIdleTimer()
     }
 
@@ -160,7 +165,7 @@ final class TimerModel {
 
     /// Keep the screen awake while the timer is counting or ringing.
     private func updateIdleTimer() {
-        UIApplication.shared.isIdleTimerDisabled = isActive && (phase == .running || phase == .finished)
+        UIApplication.shared.isIdleTimerDisabled = !isBackgrounded && (phase == .running || phase == .finished)
     }
 
     // MARK: - Persistence (survives the app being closed)
