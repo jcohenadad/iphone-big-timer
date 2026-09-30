@@ -29,3 +29,5 @@ Free Apple ID builds expire after 7 days: just press Run again from Xcode (the p
 ## Support
 Found a problem or have a question? Please open an issue on the
 [Issues page](https://github.com/jcohenadad/iphone-big-timer/issues).
+
+Privacy policy: [PRIVACY.md](PRIVACY.md) — Big Timer collects no data.
