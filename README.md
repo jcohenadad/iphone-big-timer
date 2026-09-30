@@ -25,3 +25,7 @@ Free Apple ID builds expire after 7 days: just press Run again from Xcode (the p
 - +1:00 adds a minute (snoozes when ringing). ↺ resets.
 - When time is up: screen flashes red, alarm loops, overtime counts up. Tap Stop.
 - Turn the phone sideways for even bigger digits.
+
+## Support
+Found a problem or have a question? Please open an issue on the
+[Issues page](https://github.com/jcohenadad/iphone-big-timer/issues).
